@@ -53,19 +53,17 @@ namespace StatsParser // Note: actual namespace depends on the project name.
 
         private static PerformanceEventsSummary BuildSummary(IEnumerable<PerformanceEvent> events)
         {
-            var summary = new PerformanceEventsSummary();
-
-            summary.SampleSize = events.Count();
-
-            summary.MinCpu = events.Min(e => e.Cpu);
-            summary.MaxCpu = events.Max(e => e.Cpu);
-            summary.MinDuration = events.Min(e => e.Duration);
-            summary.MaxDuration = events.Max(e => e.Duration);
-
-            summary.AverageReads = events.Average(e => e.Reads);
-            summary.AverageWrites = events.Average(e => e.Writes);
-            summary.AverageCpu = events.Average(e => e.Cpu);
-            summary.AverageDuration = events.Average(e => e.Duration);
+            var summary = new PerformanceEventsSummary(
+                MinCpu: events.Min(e => e.Cpu),
+                MaxCpu: events.Max(e => e.Cpu),
+                MinDuration: events.Min(e => e.Duration),
+                MaxDuration: events.Max(e => e.Duration),
+                AverageReads: events.Average(e => e.Reads),
+                AverageWrites: events.Average(e => e.Writes),
+                AverageCpu: events.Average(e => e.Cpu),
+                AverageDuration: events.Average(e => e.Duration),
+                SampleSize: events.Count()
+            );
 
             return summary;
         }
@@ -140,19 +138,17 @@ namespace StatsParser // Note: actual namespace depends on the project name.
             public int Writes { get; set; }
         }
 
-        private record PerformanceEventsSummary
-        {
-            public int MinCpu { get; set; }
-            public int MinDuration { get; set; }
-            public int MaxDuration { get; set; }
-            public int MaxCpu { get; set; }
-
-            public double AverageDuration { get; set; }
-            public double AverageCpu { get; set; }
-            public double AverageReads { get; set; }
-            public double AverageWrites { get; set; }
-            public int SampleSize { get; set; }
-        }
+        private readonly record struct PerformanceEventsSummary(
+            int MinCpu,
+            int MinDuration,
+            int MaxDuration,
+            int MaxCpu,
+            double AverageDuration,
+            double AverageCpu,
+            double AverageReads,
+            double AverageWrites,
+            int SampleSize
+            );
     }
 }
 
