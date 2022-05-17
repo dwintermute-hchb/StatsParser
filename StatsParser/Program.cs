@@ -10,11 +10,10 @@ namespace StatsParser // Note: actual namespace depends on the project name.
         static async Task Main(string[] args)
         {
             var parsed = await ParseFile(args[0]);
+            var filtered = parsed.Where(p => p.TextData.Contains("declare") && p.Cpu > 0).ToList();
+            var summary = BuildSummary(filtered);
 
-            var result = parsed.Where(p => p.TextData.Contains("declare") && p.Cpu > 0).ToList();
-            var summaruy = BuildSummary(result);
-
-            PrintSummary(summaruy);
+            PrintSummary(summary);
         }
 
         private static async Task<IEnumerable<PerformanceEvent>> ParseFile(string filename)
