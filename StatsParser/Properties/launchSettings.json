@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "StatsParser": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\temp\\include_recerts_1.xml"
+    }
+  }
+}
